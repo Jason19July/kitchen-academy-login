@@ -20,8 +20,10 @@
         .login-box { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 100%; max-width: 400px; }
         
         /* Course Wrapper - Hidden by default */
-        #course-wrapper { display: none; width: 100%; height: 100vh; overflow: hidden; background: white; }
-        iframe { width: 100%; height: 100%; border: none; }
+        #course-wrapper { display: none; width: 100%; height: 100vh; display: flex; flex-direction: column; background: white; }
+        
+        /* Ensure the iframe fills the remaining space below the logout bar */
+        iframe { flex-grow: 1; width: 100%; border: none; }
 
         .btn { padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; width: 100%; }
     </style>
@@ -33,7 +35,6 @@
         <div class="login-box">
             <h1>The Kitchen Academy</h1>
             <p>Please log in to access your masterclass.</p>
-            <!-- Memberstack Login Modal Trigger -->
             <button data-ms-modal="login" class="btn">Log In to Academy</button>
             <p style="margin-top: 20px; font-size: 14px; color: #666;">Don't have access? <a href="https://thekitchenacademy.online" style="color: #000;">Visit our website</a></p>
         </div>
@@ -41,6 +42,9 @@
 
     <!-- SECTION 2: THE COURSE (Shown to logged-in members) -->
     <div id="course-wrapper">
+        <div style="background: #000; color: #fff; padding: 10px; text-align: right;">
+            <a href="#" data-ms-action="logout" style="color: #fff; text-decoration: none; font-size: 14px; margin-right: 20px;">Log Out of Academy</a>
+        </div>
         <iframe src="https://gamma.app/embed/ya47k4y0w8ziluh" allow="fullscreen" title="Bread Masterclass One"></iframe>
     </div>
 
@@ -49,7 +53,7 @@
         window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
             if (member) {
                 // If logged in: Show course, hide login
-                document.getElementById('course-wrapper').style.display = 'block';
+                document.getElementById('course-wrapper').style.display = 'flex';
                 document.getElementById('login-container').style.display = 'none';
             } else {
                 // If not logged in: Ensure login is visible
