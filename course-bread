@@ -13,30 +13,40 @@
     </script>
 
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: sans-serif; }
-        #protected-content { display: none; width: 100%; height: 100vh; border: none; }
+        body, html { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: sans-serif; background: #ffffff; }
+        #protected-wrapper { display: none; width: 100%; height: 100vh; }
+        
+        /* This forces your Gamma embed to be full-screen instead of a small box */
+        iframe { 
+            width: 100% !important; 
+            height: 100vh !important; 
+            border: none !important; 
+        }
+
         #access-denied { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; text-align: center; padding: 20px; }
-        .btn { padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; margin-top: 15px; }
+        .btn { padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 5px; cursor: pointer; text-decoration: none; margin-top: 15px; font-weight: bold; font-size: 18px; }
     </style>
 </head>
 <body>
 
-    <!-- This is what they see if they aren't logged in -->
+    <!-- Access Denied Message (Hidden if logged in) -->
     <div id="access-denied">
         <h1>Members Only Content</h1>
         <p>Please log in to access the Bread Masterclass.</p>
-        <button data-ms-modal="login" class="btn">Log In Now</button>
+        <button data-ms-modal="login" class="btn">Log In to Academy</button>
     </div>
 
-    <!-- This is the "Wrapper" for your Gamma Course -->
-    <iframe id="protected-content" src="https://bread-masterclass-one-5bfi5ki.gamma.site/"></iframe>
+    <!-- The Gamma Embed Wrapper -->
+    <div id="protected-wrapper">
+        <iframe src="https://gamma.app/embed/ya47k4y0w8ziluh" allow="fullscreen" title="Bread Masterclass One"></iframe>
+    </div>
 
     <script>
-        // Use Memberstack to check the student's status
+        // Check if member is logged in
         window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
             if (member) {
-                // SUCCESS: They are logged in! Show the course, hide the warning.
-                document.getElementById('protected-content').style.display = 'block';
+                // Show the course!
+                document.getElementById('protected-wrapper').style.display = 'block';
                 document.getElementById('access-denied').style.display = 'none';
             }
         });
