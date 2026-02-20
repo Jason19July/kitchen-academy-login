@@ -2,40 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login | The Kitchen Academy</title>
+    <title>The Kitchen Academy | Hub</title>
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
     
     <style>
-        body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; margin: 0; }
-        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
-        .logo { color: #800000; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
-        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; }
+        body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; margin: 0; padding: 20px; }
+        .hub-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 500px; width: 100%; }
+        .logo { color: #800000; font-size: 28px; font-weight: bold; margin-bottom: 20px; }
+        .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; box-sizing: border-box; }
         .btn-primary { background: #800000; color: white; }
+        .btn-outline { border: 2px solid #800000; color: #800000; background: transparent; }
         .btn-secondary { background: #e0e0e0; color: #333; }
-        p { color: #666; font-size: 14px; line-height: 1.5; }
+        p { color: #666; font-size: 15px; line-height: 1.6; }
+        #logged-in-view, #logged-out-view { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="login-card">
+    <div class="hub-card">
         <div class="logo">The Kitchen Academy</div>
-        <p>Please log in to access your masterclasses.</p>
-        
-        <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
 
-        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+        <!-- VIEW 1: For Students who are NOT logged in -->
+        <div id="logged-out-view">
+            <p>Welcome! Please log in to access your masterclasses.</p>
+            <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+            <p><strong>First time or forgot password?</strong></p>
+            <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
+        </div>
 
-        <p><strong>First time or forgot password?</strong></p>
-        <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
+        <!-- VIEW 2: For Students who ARE logged in -->
+        <div id="logged-in-view">
+            <p>Welcome back, Chef! Select your masterclass:</p>
+            
+            <!-- Link directly to your existing course files -->
+            <a href="https://login.thekitchenacademy.online/steakhouseone.html" class="btn btn-outline">The Steakhouse Masterclass</a>
+            
+            <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+            <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
+        </div>
     </div>
 
     <script>
-    // Simple check: If logged in, go to Academy.
-    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        if (member) {
-            window.location.href = "https://login.thekitchenacademy.online/academy.html";
-        }
-    });
+    // This script checks if the user is logged in and shows the right view
+    function updateUI() {
+        window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+            if (member) {
+                document.getElementById('logged-in-view').style.display = 'block';
+                document.getElementById('logged-out-view').style.display = 'none';
+            } else {
+                document.getElementById('logged-in-view').style.display = 'none';
+                document.getElementById('logged-out-view').style.display = 'block';
+            }
+        });
+    }
+
+    // Run on load and every 2 seconds to catch login/logout events
+    updateUI();
+    setInterval(updateUI, 2000);
     </script>
 
 </body>
