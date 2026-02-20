@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicken Masterclass One | The Kitchen Academy</title>
+
+    <!-- 1. The Memberstack Header Script -->
+    <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
+
+    <style>
+        body { margin: 0; padding: 0; background-color: #f4f7f6; font-family: sans-serif; overflow: hidden; }
+        .loading-screen {
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; width: 100vw; position: fixed; background: white; z-index: 999;
+        }
+        iframe { border: none; width: 100vw; height: 100vh; display: none; }
+    </style>
+</head>
+<body>
+
+    <div id="loading" class="loading-screen">
+        <p style="color: #800000; font-weight: bold;">Preparing your kitchen...</p>
+    </div>
+
+    <!-- 2. FILL IN: The Gamma Embed for the CHICKEN course -->
+    <iframe id="course-content" src="https://chicken-masterclass-one-9rhs7r7.gamma.site/" allow="fullscreen"></iframe>
+
+    <script>
+    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+        const COURSE_PLAN_ID = "pln_single-course-chicken-masterclass-one-vp3r0jx7";
+        
+        // 3. FILL IN: Your Gamma Sales Page for Chicken
+        const SALES_PAGE_URL = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking"; 
+
+        const hasPlan = member && member.planConnections && member.planConnections.some(plan => plan.planId === COURSE_PLAN_ID);
+
+        if (hasPlan) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('course-content').style.display = 'block';
+        } else {
+            window.location.href = SALES_PAGE_URL;
+        }
+    });
+    </script>
+
+</body>
+</html>
