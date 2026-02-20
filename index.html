@@ -20,26 +20,30 @@
 
     <div class="login-card">
         <div class="logo">The Kitchen Academy</div>
-        
         <p>Welcome! Please log in to access your masterclasses.</p>
         
-        <!-- Updated Login Button -->
         <button onclick="window.$memberstackDom.openModal('login')" class="btn btn-primary">Member Login</button>
 
         <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
         <p><strong>First time or forgot password?</strong></p>
-        
-        <!-- Updated Reset Password Button -->
         <button onclick="window.$memberstackDom.openModal('forgot-password')" class="btn btn-secondary">Set / Reset Password</button>
-        <p class="spam-note">Check your spam folder if the code doesn't arrive in 60 seconds!</p>
+        <p class="spam-note">Check your spam folder if the code doesn't arrive!</p>
     </div>
 
     <script>
-    // Ensure the member is sent to the academy if they are already logged in
+    // SMART REDIRECT: This runs every time the member state changes
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
         if (member) {
-            window.location.href = "/academy.html";
+            // If they are logged in (even just after a password reset), send them to the Academy
+            window.location.replace("/academy.html");
+        }
+    });
+
+    // Listen for the "Login" event specifically to catch the moment they finish the modal
+    window.addEventListener("message", (event) => {
+        if (event.data.type === "MS_LOGIN_SUCCESS") {
+            window.location.replace("/academy.html");
         }
     });
     </script>
