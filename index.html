@@ -32,20 +32,22 @@
     </div>
 
     <script>
-    // SMART REDIRECT: This runs every time the member state changes
-    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        if (member) {
-            // If they are logged in (even just after a password reset), send them to the Academy
-            window.location.replace("/academy.html");
-        }
-    });
+    // This function handles the "Escape" from the hang
+    function checkMemberAndRedirect() {
+        window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+            if (member) {
+                // Force a hard redirect to the academy
+                window.location.href = "https://login.thekitchenacademy.online/academy.html";
+            }
+        });
+    }
 
-    // Listen for the "Login" event specifically to catch the moment they finish the modal
-    window.addEventListener("message", (event) => {
-        if (event.data.type === "MS_LOGIN_SUCCESS") {
-            window.location.replace("/academy.html");
-        }
-    });
+    // Run the check every 2 seconds in the background. 
+    // This "un-hangs" the page if the modal finishes but doesn't trigger an event.
+    setInterval(checkMemberAndRedirect, 2000);
+
+    // Also check immediately on load
+    checkMemberAndRedirect();
     </script>
 
 </body>
