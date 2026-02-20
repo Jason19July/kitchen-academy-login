@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>The Kitchen Academy | Hub</title>
+    <!-- Memberstack Webflow/DOM Package -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
     
     <style>
@@ -31,9 +32,9 @@
 
         <div id="logged-in-view">
             <p>Welcome back, Chef!</p>
-            <!-- These links are "Relative" - they automatically stay inside the folder -->
-            <a href="steakhouse.html" class="btn btn-primary">Enter Steakhouse Masterclass</a>
-            <a href="breadone.html" class="btn btn-primary">Enter Bread Masterclass</a>
+            <!-- Updated to full URLs to prevent 404s -->
+            <a href="https://www.thekitchenacademy.online/steakhouse" class="btn btn-primary">Enter Steakhouse Masterclass</a>
+            <a href="https://www.thekitchenacademy.online/bread-one" class="btn btn-primary">Enter Bread Masterclass</a>
             
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
             <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
@@ -41,19 +42,14 @@
     </div>
 
     <script>
-    function updateUI() {
-        window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-            if (member) {
-                document.getElementById('logged-in-view').style.display = 'block';
-                document.getElementById('logged-out-view').style.display = 'none';
-            } else {
-                document.getElementById('logged-in-view').style.display = 'none';
-                document.getElementById('logged-out-view').style.display = 'block';
-            }
-        });
-    }
-    updateUI();
-    setInterval(updateUI, 2000);
+    // Run once when Memberstack is ready
+    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+        if (member) {
+            document.getElementById('logged-in-view').style.display = 'block';
+        } else {
+            document.getElementById('logged-out-view').style.display = 'block';
+        }
+    });
     </script>
 
 </body>
