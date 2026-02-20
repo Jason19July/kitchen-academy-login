@@ -2,65 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Kitchen Academy - Bread Masterclass</title>
+    <title>Login | The Kitchen Academy</title>
+    <!-- Memberstack Library -->
+    <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
     
-    <!-- Memberstack Script -->
-    <script
-      data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9"
-      src="https://static.memberstack.com/scripts/v2/memberstack.js"
-      type="text/javascript">
-    </script>
-
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; font-family: sans-serif; background: #f4f4f4; }
-        
-        /* Login Container Styles */
-        #login-container { display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-box { background: white; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; width: 100%; max-width: 400px; }
-        
-        /* Course Wrapper - Hidden by default */
-        #course-wrapper { display: none; width: 100%; height: 100vh; display: flex; flex-direction: column; background: white; }
-        
-        /* Ensure the iframe fills the remaining space below the logout bar */
-        iframe { flex-grow: 1; width: 100%; border: none; }
-
-        .btn { padding: 12px 24px; background: #000; color: #fff; border: none; border-radius: 5px; cursor: pointer; margin-top: 15px; font-weight: bold; width: 100%; }
+        body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; font-family: sans-serif; margin: 0; }
+        .login-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 400px; width: 90%; }
+        .logo { color: #800000; font-size: 24px; font-weight: bold; margin-bottom: 20px; }
+        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+        .btn-primary { background: #800000; color: white; }
+        .btn-primary:hover { background: #600000; }
+        .btn-secondary { background: #e0e0e0; color: #333; }
+        .btn-secondary:hover { background: #d0d0d0; }
+        p { color: #666; font-size: 14px; line-height: 1.5; }
     </style>
 </head>
 <body>
 
-    <!-- SECTION 1: LOGIN (Shown to logged-out users) -->
-    <div id="login-container">
-        <div class="login-box">
-            <h1>The Kitchen Academy</h1>
-            <p>Please log in to access your masterclass.</p>
-            <button data-ms-modal="login" class="btn">Log In to Academy</button>
-            <p style="margin-top: 20px; font-size: 14px; color: #666;">Don't have access? <a href="https://thekitchenacademy.online" style="color: #000;">Visit our website</a></p>
-        </div>
-    </div>
+    <div class="login-card">
+        <div class="logo">The Kitchen Academy</div>
+        
+        <p>Welcome back! Please log in to access your masterclasses.</p>
+        
+        <!-- Option 1: Standard Login -->
+        <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
 
-    <!-- SECTION 2: THE COURSE (Shown to logged-in members) -->
-    <div id="course-wrapper">
-        <div style="background: #000; color: #fff; padding: 10px; text-align: right;">
-            <a href="#" data-ms-action="logout" style="color: #fff; text-decoration: none; font-size: 14px; margin-right: 20px;">Log Out of Academy</a>
-        </div>
-        <iframe src="https://gamma.app/embed/ya47k4y0w8ziluh" allow="fullscreen" title="Bread Masterclass One"></iframe>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+        <p><strong>First time here?</strong><br>If you just joined, click below to set your password.</p>
+        
+        <!-- Option 2: Reset/Forgot Password -->
+        <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
     </div>
 
     <script>
-        // Memberstack Logic: Decide what to show
-        window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-            if (member) {
-                // If logged in: Show course, hide login
-                document.getElementById('course-wrapper').style.display = 'flex';
-                document.getElementById('login-container').style.display = 'none';
-            } else {
-                // If not logged in: Ensure login is visible
-                document.getElementById('login-container').style.display = 'flex';
-                document.getElementById('course-wrapper').style.display = 'none';
-            }
-        });
+    // If they are already logged in, don't show the buttons, just send them to the Academy
+    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+        if (member) {
+            window.location.href = "/academy.html";
+        }
+    });
     </script>
 
 </body>
