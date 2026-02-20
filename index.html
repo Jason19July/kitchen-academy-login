@@ -13,6 +13,7 @@
         .btn-primary { background: #800000; color: white; }
         .btn-secondary { background: #e0e0e0; color: #333; }
         p { color: #666; font-size: 14px; line-height: 1.5; }
+        .spam-note { font-size: 12px; color: #999; margin-top: 5px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -22,16 +23,26 @@
         
         <p>Welcome! Please log in to access your masterclasses.</p>
         
-        <!-- Standard Login Button -->
-        <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
+        <!-- Updated Login Button -->
+        <button onclick="window.$memberstackDom.openModal('login')" class="btn btn-primary">Member Login</button>
 
         <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
 
         <p><strong>First time or forgot password?</strong></p>
         
-        <!-- Reset Password Button -->
-        <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
+        <!-- Updated Reset Password Button -->
+        <button onclick="window.$memberstackDom.openModal('forgot-password')" class="btn btn-secondary">Set / Reset Password</button>
+        <p class="spam-note">Check your spam folder if the code doesn't arrive in 60 seconds!</p>
     </div>
+
+    <script>
+    // Ensure the member is sent to the academy if they are already logged in
+    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+        if (member) {
+            window.location.href = "/academy.html";
+        }
+    });
+    </script>
 
 </body>
 </html>
