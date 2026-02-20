@@ -7,11 +7,10 @@
     
     <style>
         body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; margin: 0; padding: 20px; }
-        .hub-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 500px; width: 100%; }
+        .hub-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 100%; }
         .logo { color: #800000; font-size: 28px; font-weight: bold; margin-bottom: 20px; }
         .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; box-sizing: border-box; }
         .btn-primary { background: #800000; color: white; }
-        .btn-outline { border: 2px solid #800000; color: #800000; background: transparent; }
         .btn-secondary { background: #e0e0e0; color: #333; }
         p { color: #666; font-size: 15px; line-height: 1.6; }
         #logged-in-view, #logged-out-view { display: none; }
@@ -22,7 +21,6 @@
     <div class="hub-card">
         <div class="logo">The Kitchen Academy</div>
 
-        <!-- VIEW 1: For Students who are NOT logged in -->
         <div id="logged-out-view">
             <p>Welcome! Please log in to access your masterclasses.</p>
             <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
@@ -31,12 +29,11 @@
             <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
         </div>
 
-        <!-- VIEW 2: For Students who ARE logged in -->
         <div id="logged-in-view">
-            <p>Welcome back, Chef! Select your masterclass:</p>
-            
-            <!-- Link directly to your existing course files -->
-            <a href="https://login.thekitchenacademy.online/steakhouseone.html" class="btn btn-outline">The Steakhouse Masterclass</a>
+            <p>Welcome back, Chef!</p>
+            <!-- These links are "Relative" - they automatically stay inside the folder -->
+            <a href="steakhouse.html" class="btn btn-primary">Enter Steakhouse Masterclass</a>
+            <a href="breadone.html" class="btn btn-primary">Enter Bread Masterclass</a>
             
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
             <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
@@ -44,7 +41,6 @@
     </div>
 
     <script>
-    // This script checks if the user is logged in and shows the right view
     function updateUI() {
         window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
             if (member) {
@@ -56,8 +52,6 @@
             }
         });
     }
-
-    // Run on load and every 2 seconds to catch login/logout events
     updateUI();
     setInterval(updateUI, 2000);
     </script>
