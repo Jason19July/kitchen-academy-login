@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>The Kitchen Academy | Hub</title>
-    <!-- Memberstack Webflow/DOM Package -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
-    
     <style>
         body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; margin: 0; padding: 20px; }
         .hub-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 100%; }
@@ -14,30 +12,19 @@
         .btn-primary { background: #800000; color: white; }
         .btn-secondary { background: #e0e0e0; color: #333; }
         p { color: #666; font-size: 15px; line-height: 1.6; }
-
-        /* Hide both views by default so there's no "flicker" */
         #logged-in-view, #logged-out-view, .course-btn { display: none; }
     </style>
 </head>
 <body>
-
     <div class="hub-card">
         <div class="logo">The Kitchen Academy</div>
-
-        <!-- VIEW 1: LOGGED OUT -->
         <div id="logged-out-view">
             <p>Welcome! Please log in to access your masterclasses.</p>
             <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
-            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            <p><strong>If you are logging in for the FIRST time, OR have forgotten your password, please click the button below:</strong></p>
             <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
         </div>
-
-        <!-- VIEW 2: LOGGED IN -->
         <div id="logged-in-view">
             <p id="welcome-text">Welcome back, Chef! Select your course below:</p>
-
-            <!-- CORE COURSES (Unlocks for Academy, Private, and Single) -->
             <a id="btn-bread" href="breadone.html" class="btn btn-primary course-btn">Enter Bread Masterclass</a>
             <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary course-btn">Enter Bread Masterclass 2</a>
             <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Enter Savoury Foundations</a>
@@ -45,67 +32,43 @@
             <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Enter Chicken Masterclass</a>
             <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Enter Meat Masterclass</a>
             <a id="btn-steakhouse" href="steakhouse.html" class="btn btn-primary course-btn">Enter Steakhouse Masterclass</a>
-
-            <!-- PREMIUM COURSES (Unlocks for Private and Single ONLY) -->
             <a id="btn-asian" href="asianone.html" class="btn btn-primary course-btn">Enter Asian Masterclass (Premium)</a>
-            
-            <!-- MASTER PORTAL BUTTONS -->
-            <a id="btn-academy" href="kitchenacademy.html" class="btn btn-primary course-btn">Academy Member Portal</a>
-            <a id="btn-private" href="privatekitchen.html" class="btn btn-primary course-btn">Private Kitchen Portal</a>
-            
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
             <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
         </div>
     </div>
-
     <script>
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
         if (!member) {
             document.getElementById('logged-out-view').style.display = 'block';
         } else {
             document.getElementById('logged-in-view').style.display = 'block';
-            
             const connections = member.planConnections || [];
             const memberPlanIds = connections.map(c => c.planId);
-
-            // 1. IDENTIFY TIER ACCESS
             const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
             const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
             const isAnyVIP = isAcademy || isPrivate;
 
-            // 2. CORE COURSES LOGIC
-            // These unlock if: Any VIP Tier OR the Specific Single Plan
             const coreCourses = {
                 'pln_single-course-bread-masterclass-one-hl3m0uqv': 'btn-bread',
-                'pln_single-course-bread-masterclass-two-m6zr0uim': 'btn-bread2', // Update with your new Bread 2 Plan ID
+                'YOUR_BREAD_2_PLAN_ID': 'btn-bread2', // <--- SWAP THIS
                 'pln_single-course-savoury-foundations-v33i0u0u': 'btn-savoury',
                 'pln_single-course-sweet-foundations-773s0u7r': 'btn-sweet',
                 'pln_single-course-chicken-masterclass-963v0u9h': 'btn-chicken',
                 'pln_single-course-meat-masterclass-6f3v0u9o': 'btn-meat',
                 'pln_single-course-steakhouse-masterclass-m83w0ubf': 'btn-steakhouse'
             };
-
             for (const [planId, btnId] of Object.entries(coreCourses)) {
                 if (isAnyVIP || memberPlanIds.includes(planId)) {
                     const el = document.getElementById(btnId);
                     if (el) el.style.display = 'block';
                 }
             }
-
-            // 3. PREMIUM COURSE LOGIC
-            // Unlocks if: Private Kitchen Tier OR the Specific Single Plan
-            // (Academy members do NOT get this automatically)
-            const asianPlanId = 'pln_asian-masterclass-one-hczq0up7'; // Update with your new Asian Plan ID
-            const asianBtnId = 'btn-asian';
-            
+            const asianPlanId = 'YOUR_ASIAN_PLAN_ID'; // <--- SWAP THIS
             if (isPrivate || memberPlanIds.includes(asianPlanId)) {
-                const el = document.getElementById(asianBtnId);
+                const el = document.getElementById('btn-asian');
                 if (el) el.style.display = 'block';
             }
-
-            // 4. SHOW MASTER PORTALS
-            if (isAcademy) document.getElementById('btn-academy').style.display = 'block';
-            if (isPrivate) document.getElementById('btn-private').style.display = 'block';
         }
     });
     </script>
