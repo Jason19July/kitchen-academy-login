@@ -2,28 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Savoury Masterclass One | The Kitchen Academy</title>
+    <title>Savoury Masterclass One</title>
+    <!-- Memberstack Library -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
-    <style>
-        body { margin: 0; padding: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
-        #content { display: none; width: 100%; height: 100%; }
-        iframe { border: none; width: 100%; height: 100%; }
-        .loading { color: #fff; font-size: 18px; }
-    </style>
-</head>
-<body>
-    <div id="loading" class="loading">Verifying Academy Access...</div>
-
-    <div id="content">
-        <!-- YOUR GAMMA PRESENTATION IFRAME -->
-        <iframe src="https://gamma.app/embed/3z9059f635k0729" allow="fullscreen" title="Savoury Masterclass One"></iframe>
-    </div>
-
+    
     <script>
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        if (!member) { 
-            window.location.href = "https://www.thekitchenacademy.online/join-us"; 
-            return; 
+        // 1. If no member, boot them out
+        if (!member) {
+            window.location.href = "https://www.thekitchenacademy.online/join-us";
+            return;
         }
 
         const plans = (member.planConnections || []).map(c => c.planId);
@@ -31,16 +19,21 @@
         const isPrivate = plans.includes('pln_the-private-kitchen-fv310jek');
         const hasCourse = plans.includes('pln_single-course-savoury-masterclass-one-v73m0u7v');
 
-        if (isAcademy || isPrivate || hasCourse) {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('content').style.display = 'block'; 
-        } else {
-            window.location.href = "https://www.thekitchenacademy.online/join-us"; 
+        // 2. If they DON'T have a valid plan, boot them out
+        if (!(isAcademy || isPrivate || hasCourse)) {
+            window.location.href = "https://www.thekitchenacademy.online/join-us";
         }
-    }).catch(err => {
-        console.error(err);
-        window.location.href = "https://www.thekitchenacademy.online/join-us";
+        // 3. If they DO have the plan, the page just continues to load the iframe below
     });
     </script>
+
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; overflow: hidden; }
+        iframe { border: none; width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <!-- The Iframe is just here, plain and simple, like it was this morning -->
+    <iframe src="https://gamma.app/embed/3z9059f635k0729" allow="fullscreen"></iframe>
 </body>
 </html>
