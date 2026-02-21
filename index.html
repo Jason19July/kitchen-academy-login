@@ -52,19 +52,23 @@
             const isAcademy = plans.includes('pln_the-kitchen-academy-gi310uow');
             const isPrivate = plans.includes('pln_the-private-kitchen-fv310jek');
 
-            // Logic to show buttons
+            // 1. Bread 1
             if (isAcademy || isPrivate || plans.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
                 document.getElementById('btn-bread1').style.display = 'block';
             }
+            // 2. Bread 2
             if (isAcademy || isPrivate || plans.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
                 document.getElementById('btn-bread2').style.display = 'block';
             }
+            // 3. Steakhouse
             if (isAcademy || isPrivate || plans.includes('pln_single-course-steakhouse-masterclass-7p3m0uhv')) {
                 document.getElementById('btn-steak').style.display = 'block';
             }
+            // 4. Asian
             if (isPrivate || plans.includes('pln_asian-masterclass-one-hczq0up7')) {
                 document.getElementById('btn-asian').style.display = 'block';
             }
+            // 5. Academy Courses
             if (isAcademy || isPrivate) {
                 document.getElementById('btn-savoury').style.display = 'block';
                 document.getElementById('btn-sweet').style.display = 'block';
