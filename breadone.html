@@ -1,6 +1,5 @@
 <script>
 window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-    // 1. If not logged in, send to sales page
     if (!member) {
         window.location.href = "https://www.thekitchenacademy.online/join-us"; 
         return;
@@ -8,16 +7,13 @@ window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
 
     const memberPlanIds = (member.planConnections || []).map(c => c.planId);
     
-    // 2. The Master Keys
+    // VERIFIED IDs from your dashboard
     const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
     const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
-
-    // 3. Specific Course Key for Bread One
     const hasThisCourse = memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv');
 
-    // 4. THE BOUNCER LOGIC
     if (isAcademy || isPrivate || hasThisCourse) {
-        // We use the ID "content" because that's what wraps your iframe
+        // Ensure your iframe is inside a div with id="content"
         const contentEl = document.getElementById('content');
         if (contentEl) contentEl.style.display = 'block'; 
     } else {
