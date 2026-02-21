@@ -37,15 +37,17 @@
         <div id="logged-in-view">
             <p id="welcome-text">Welcome back, Chef! Select your course below:</p>
 
-            <!-- Course Buttons (IDs added for the script to control) -->
+            <!-- Course Buttons -->
             <a id="btn-bread" href="breadone.html" class="btn btn-primary course-btn">Enter Bread Masterclass</a>
             <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Enter Savoury Foundations</a>
             <a id="btn-sweet" href="sweetone.html" class="btn btn-primary course-btn">Enter Sweet Foundations</a>
             <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Enter Chicken Masterclass</a>
             <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Enter Meat Masterclass</a>
             <a id="btn-steakhouse" href="steakhouse.html" class="btn btn-primary course-btn">Enter Steakhouse Masterclass</a>
-            <a id="btn-academy" href="kitchenacademy.html" class="btn btn-primary course-btn">Enter The Kitchen Academy</a>
-            <a id="btn-private" href="privatekitchen.html" class="btn btn-primary course-btn">Enter The Private Kitchen</a>
+            
+            <!-- Tier Specific Buttons (Usually only for the Master Plans) -->
+            <a id="btn-academy" href="kitchenacademy.html" class="btn btn-primary course-btn">Academy Member Portal</a>
+            <a id="btn-private" href="privatekitchen.html" class="btn btn-primary course-btn">Private Kitchen Portal</a>
             
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
             <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
@@ -53,52 +55,52 @@
     </div>
 
     <script>
+    // 1. Define the "Master Keys" that unlock EVERYTHING
+    const MASTER_PLANS = [
+        'pln_the-kitchen-academy-gi310uow', // Academy
+        'pln_the-private-kitchen-fv310jek'  // Private Kitchen
+    ];
+
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
         if (!member) {
-            // User is NOT logged in
             document.getElementById('logged-out-view').style.display = 'block';
         } else {
-            // User IS logged in
-            const plans = member.planConnections || [];
+            document.getElementById('logged-in-view').style.display = 'block';
             
-            // Map Plan IDs to their pages
-            const planMap = {
-                'pln_single-course-bread-masterclass-one-hl3m0uqv': { page: 'breadone.html', btn: 'btn-bread' },
-                'pln_single-course-a32z0ulc': { page: 'savouryone.html', btn: 'btn-savoury' },
-                'pln_single-course-sweet-foundations-masterclass-one-133k01wo': { page: 'sweetone.html', btn: 'btn-sweet' },
-                'pln_single-course-chicken-masterclass-one-vp3r0jx7': { page: 'chickenone.html', btn: 'btn-chicken' },
-                'pln_single-course-meat-masterclass-one-eo3l0und': { page: 'meatone.html', btn: 'btn-meat' },
-                'pln_single-course-a-steakhouse-at-home-rp3s0j0x': { page: 'steakhouse.html', btn: 'btn-steakhouse' },
-                'pln_the-kitchen-academy-gi310uow': { page: 'kitchenacademy.html', btn: 'btn-academy' },
-                'pln_the-private-kitchen-fv310jek': { page: 'privatekitchen.html', btn: 'btn-private' }
+            const connections = member.planConnections || [];
+            const memberPlanIds = connections.map(c => c.planId);
+
+            // 2. Check if this member is a VIP (Academy or Private)
+            const isVIP = MASTER_PLANS.some(id => memberPlanIds.includes(id));
+
+            // 3. The Course Map (Plan ID : Button ID)
+            const courseMap = {
+                'pln_single-course-bread-masterclass-one-hl3m0uqv': 'btn-bread',
+                'pln_single-course-savoury-foundations-v33i0u0u': 'btn-savoury',
+                'pln_single-course-sweet-foundations-773s0u7r': 'btn-sweet',
+                'pln_single-course-chicken-masterclass-963v0u9h': 'btn-chicken',
+                'pln_single-course-meat-masterclass-6f3v0u9o': 'btn-meat',
+                'pln_single-course-steakhouse-masterclass-m83w0ubf': 'btn-steakhouse'
+                // ADD NEW COURSES HERE LATER
             };
 
-            if (plans.length === 1) {
-                // REDIRECT AUTOMATICALLY if they only have one plan
-                const planData = planMap[plans[0].planId];
-                if (planData) {
-                    window.location.href = planData.page;
-                } else {
-                    // Fallback: show the view if plan ID isn't mapped
-                    document.getElementById('logged-in-view').style.display = 'block';
+            // 4. Logic: Show button if they own the course OR are a VIP
+            for (const [planId, btnId] of Object.entries(courseMap)) {
+                if (isVIP || memberPlanIds.includes(planId)) {
+                    const el = document.getElementById(btnId);
+                    if (el) el.style.display = 'block';
                 }
-            } else if (plans.length > 1) {
-                // SHOW CHOICE BUTTONS if they have multiple plans
-                document.getElementById('logged-in-view').style.display = 'block';
-                plans.forEach(p => {
-                    const planData = planMap[p.planId];
-                    if (planData) {
-                        document.getElementById(planData.btn).style.display = 'block';
-                    }
-                });
-            } else {
-                // Logged in but no plans
-                document.getElementById('logged-in-view').style.display = 'block';
-                document.getElementById('welcome-text').innerText = "You don't have any active masterclasses yet.";
+            }
+
+            // 5. Always show the specific Master Portal button if they have that specific plan
+            if (memberPlanIds.includes('pln_the-kitchen-academy-gi310uow')) {
+                document.getElementById('btn-academy').style.display = 'block';
+            }
+            if (memberPlanIds.includes('pln_the-private-kitchen-fv310jek')) {
+                document.getElementById('btn-private').style.display = 'block';
             }
         }
     });
     </script>
-
 </body>
 </html>
