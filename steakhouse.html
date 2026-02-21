@@ -2,33 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Steakhouse Masterclass | The Kitchen Academy</title>
-    <!-- 1. Memberstack Script -->
+    <title>A Steakhouse at Home | The Kitchen Academy</title>
+    <!-- Memberstack Security Script -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
-    
     <style>
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        /* The iframe is HIDDEN by default */
+        /* This makes the Gamma video fill the entire browser window */
         #courseFrame { display: none; border: none; width: 100vw; height: 100vh; }
     </style>
 </head>
 <body>
 
-    <!-- Steakhouse Masterclass Gamma Embed -->
-    <iframe id="courseFrame" src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe>
+    <!-- Your Unique Steakhouse Gamma Embed -->
+    <iframe id="courseFrame" src="https://gamma.app/embed/0j8tbxyt5ocu7hm" allow="fullscreen" title="A Steakhouse at Home"></iframe>
 
     <script>
-        // 2. The Security Check
+        // Check if the person is a logged-in member
         window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
             if (member) {
-                // Member found! Show the course.
+                // Member is logged in! Show the Steakhouse Course.
                 document.getElementById('courseFrame').style.display = 'block';
             } else {
-                // No member! Whisk them to the sales page.
+                // Not logged in! Redirect to the Sales Page.
                 window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
             }
         }).catch(() => {
-            // Error safety: whisk them away.
+            // Error check! Redirect to the Sales Page.
             window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
         });
     </script>
