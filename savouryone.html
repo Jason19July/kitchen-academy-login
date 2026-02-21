@@ -3,13 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Savoury Foundations | The Kitchen Academy</title>
+    <!-- 1. The Security Guard Script -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
+    
     <style>
+        /* Start with a black screen so they can't see the course for even a second */
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        iframe { border: none; width: 100vw; height: 100vh; }
+        iframe { border: none; width: 100vw; height: 100vh; display: none; } 
     </style>
 </head>
 <body>
-    <iframe src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe>
+
+    <iframe id="courseFrame" src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe>
+
+    <script>
+        // 2. The "Manual Kickout" Logic
+        window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+            if (member) {
+                // ✅ LOGGED IN: Show the course
+                document.getElementById('courseFrame').style.display = 'block';
+            } else {
+                // ❌ NOT LOGGED IN: Send to Sales Page
+                window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
+            }
+        }).catch(() => {
+            // 🚨 SCRIPT FAILED: Safety first, send to Sales Page
+            window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
+        });
+    </script>
+
 </body>
 </html>
