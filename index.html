@@ -16,7 +16,7 @@
         p { color: #666; font-size: 15px; line-height: 1.6; }
 
         /* Hide both views by default so there's no "flicker" */
-        #logged-in-view, #logged-out-view { display: none; }
+        #logged-in-view, #logged-out-view, .course-btn { display: none; }
     </style>
 </head>
 <body>
@@ -29,24 +29,23 @@
             <p>Welcome! Please log in to access your masterclasses.</p>
             <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
-            <p><strong>First time or forgot password?</strong></p>
+            <p><strong>If you are logging in for the FIRST time, OR have forgotten your password, please click the button below:</strong></p>
             <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
         </div>
 
         <!-- VIEW 2: LOGGED IN -->
         <div id="logged-in-view">
-            <p>Welcome back, Chef! Select your course below:</p>
+            <p id="welcome-text">Welcome back, Chef! Select your course below:</p>
 
-            <!-- These buttons use standard Memberstack attributes to show/hide based on plan -->
-            <a data-ms-content="pln_single-course-bread-masterclass-one-hl3m0uqv" href="https://login.thekitchenacademy.online/breadone.html" class="btn btn-primary">Enter Bread Masterclass</a>
-            <a data-ms-content="pln_single-course-a32z0ulc" href="https://login.thekitchenacademy.online/savouryone.html" class="btn btn-primary">Enter Savoury Foundations</a>
-            <a data-ms-content="pln_single-course-sweet-foundations-masterclass-one-133k01wo" href="https://login.thekitchenacademy.online/sweetone.html" class="btn btn-primary">Enter Sweet Foundations</a>
-            <a data-ms-content="pln_single-course-chicken-masterclass-one-vp3r0jx7" href="https://login.thekitchenacademy.online/chickenone.html" class="btn btn-primary">Enter Chicken Masterclass</a>
-            <a data-ms-content="pln_single-course-meat-masterclass-one-eo3l0und" href="https://login.thekitchenacademy.online/meatone.html" class="btn btn-primary">Enter Meat Masterclass</a>
-            <a data-ms-content="pln_single-course-a-steakhouse-at-home-rp3s0j0x" href="https://login.thekitchenacademy.online/steakhouse.html" class="btn btn-primary">Enter Steakhouse Masterclass</a>
-            
-            <a data-ms-content="pln_the-kitchen-academy-gi310uow" href="https://login.thekitchenacademy.online/kitchenacademy.html" class="btn btn-primary">Enter The Kitchen Academy</a>
-            <a data-ms-content="pln_the-private-kitchen-fv310jek" href="https://login.thekitchenacademy.online/privatekitchen.html" class="btn btn-primary">Enter The Private Kitchen</a>
+            <!-- Course Buttons (IDs added for the script to control) -->
+            <a id="btn-bread" href="breadone.html" class="btn btn-primary course-btn">Enter Bread Masterclass</a>
+            <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Enter Savoury Foundations</a>
+            <a id="btn-sweet" href="sweetone.html" class="btn btn-primary course-btn">Enter Sweet Foundations</a>
+            <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Enter Chicken Masterclass</a>
+            <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Enter Meat Masterclass</a>
+            <a id="btn-steakhouse" href="steakhouse.html" class="btn btn-primary course-btn">Enter Steakhouse Masterclass</a>
+            <a id="btn-academy" href="kitchenacademy.html" class="btn btn-primary course-btn">Enter The Kitchen Academy</a>
+            <a id="btn-private" href="privatekitchen.html" class="btn btn-primary course-btn">Enter The Private Kitchen</a>
             
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
             <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
@@ -54,18 +53,50 @@
     </div>
 
     <script>
-    // This script waits for Memberstack to load, then decides which view to show
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        if (member) {
-            // Show the logged-in section
-            document.getElementById('logged-in-view').style.display = 'block';
-        } else {
-            // Show the login button section
+        if (!member) {
+            // User is NOT logged in
             document.getElementById('logged-out-view').style.display = 'block';
+        } else {
+            // User IS logged in
+            const plans = member.planConnections || [];
+            
+            // Map Plan IDs to their pages
+            const planMap = {
+                'pln_single-course-bread-masterclass-one-hl3m0uqv': { page: 'breadone.html', btn: 'btn-bread' },
+                'pln_single-course-a32z0ulc': { page: 'savouryone.html', btn: 'btn-savoury' },
+                'pln_single-course-sweet-foundations-masterclass-one-133k01wo': { page: 'sweetone.html', btn: 'btn-sweet' },
+                'pln_single-course-chicken-masterclass-one-vp3r0jx7': { page: 'chickenone.html', btn: 'btn-chicken' },
+                'pln_single-course-meat-masterclass-one-eo3l0und': { page: 'meatone.html', btn: 'btn-meat' },
+                'pln_single-course-a-steakhouse-at-home-rp3s0j0x': { page: 'steakhouse.html', btn: 'btn-steakhouse' },
+                'pln_the-kitchen-academy-gi310uow': { page: 'kitchenacademy.html', btn: 'btn-academy' },
+                'pln_the-private-kitchen-fv310jek': { page: 'privatekitchen.html', btn: 'btn-private' }
+            };
+
+            if (plans.length === 1) {
+                // REDIRECT AUTOMATICALLY if they only have one plan
+                const planData = planMap[plans[0].planId];
+                if (planData) {
+                    window.location.href = planData.page;
+                } else {
+                    // Fallback: show the view if plan ID isn't mapped
+                    document.getElementById('logged-in-view').style.display = 'block';
+                }
+            } else if (plans.length > 1) {
+                // SHOW CHOICE BUTTONS if they have multiple plans
+                document.getElementById('logged-in-view').style.display = 'block';
+                plans.forEach(p => {
+                    const planData = planMap[p.planId];
+                    if (planData) {
+                        document.getElementById(planData.btn).style.display = 'block';
+                    }
+                });
+            } else {
+                // Logged in but no plans
+                document.getElementById('logged-in-view').style.display = 'block';
+                document.getElementById('welcome-text').innerText = "You don't have any active masterclasses yet.";
+            }
         }
-    }).catch((error) => {
-        // Fallback: show logged-out view if something goes wrong
-        document.getElementById('logged-out-view').style.display = 'block';
     });
     </script>
 
