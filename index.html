@@ -8,11 +8,11 @@
         body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; margin: 0; padding: 20px; }
         .hub-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 100%; }
         .logo { color: #800000; font-size: 28px; font-weight: bold; margin-bottom: 20px; }
-        .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; box-sizing: border-box; }
+        .btn { display: none; width: 100%; padding: 14px; margin: 10px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; box-sizing: border-box; }
         .btn-primary { background: #800000; color: white; }
-        .btn-secondary { background: #e0e0e0; color: #333; }
+        .btn-secondary { background: #e0e0e0; color: #333; display: block; }
         p { color: #666; font-size: 15px; line-height: 1.6; }
-        #logged-in-view, #logged-out-view, .course-btn { display: none; }
+        #logged-in-view, #logged-out-view { display: none; }
     </style>
 </head>
 <body>
@@ -21,24 +21,23 @@
         
         <div id="logged-out-view">
             <p>Please log in to access your masterclasses.</p>
-            <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
+            <button data-ms-modal="login" class="btn-primary" style="display:block; width:100%; padding:14px; border-radius:6px; border:none; font-weight:bold; cursor:pointer;">Member Login</button>
         </div>
 
         <div id="logged-in-view">
             <p>Welcome back, Chef!</p>
             
-            <!-- COURSE BUTTONS -->
-            <a id="btn-bread1" href="breadone.html" class="btn btn-primary course-btn">Bread Masterclass 1</a>
-            <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary course-btn">Bread Masterclass 2</a>
-            <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Savoury Masterclass</a>
-            <a id="btn-sweet" href="sweetone.html" class="btn btn-primary course-btn">Sweet Masterclass</a>
-            <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Chicken Masterclass</a>
-            <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Meat Masterclass</a>
-            <a id="btn-steak" href="steakhouse.html" class="btn btn-primary course-btn">Steakhouse Masterclass</a>
-            <a id="btn-asian" href="premiumasianone.html" class="btn btn-primary course-btn">Asian Masterclass (Premium)</a>
+            <a id="btn-bread1" href="breadone.html" class="btn btn-primary">Bread Masterclass 1</a>
+            <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary">Bread Masterclass 2</a>
+            <a id="btn-savoury" href="savouryone.html" class="btn btn-primary">Savoury Masterclass</a>
+            <a id="btn-sweet" href="sweetone.html" class="btn btn-primary">Sweet Masterclass</a>
+            <a id="btn-chicken" href="chickenone.html" class="btn btn-primary">Chicken Masterclass</a>
+            <a id="btn-meat" href="meatone.html" class="btn btn-primary">Meat Masterclass</a>
+            <a id="btn-steak" href="steakhouse.html" class="btn btn-primary">Steakhouse Masterclass</a>
+            <a id="btn-asian" href="premiumasianone.html" class="btn btn-primary">Asian Masterclass (Premium)</a>
             
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
-            <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
+            <button data-ms-action="logout" class="btn-secondary" style="width:100%; padding:14px; border-radius:6px; border:none; font-weight:bold; cursor:pointer;">Logout</button>
         </div>
     </div>
 
@@ -48,28 +47,24 @@
             document.getElementById('logged-out-view').style.display = 'block';
         } else {
             document.getElementById('logged-in-view').style.display = 'block';
-            const memberPlanIds = (member.planConnections || []).map(c => c.planId);
+            const plans = (member.planConnections || []).map(c => c.planId);
             
-            const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
-            const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
+            const isAcademy = plans.includes('pln_the-kitchen-academy-gi310uow');
+            const isPrivate = plans.includes('pln_the-private-kitchen-fv310jek');
 
-            // 1. Bread 1
-            if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
+            // Logic to show buttons
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
                 document.getElementById('btn-bread1').style.display = 'block';
             }
-            // 2. Bread 2
-            if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
                 document.getElementById('btn-bread2').style.display = 'block';
             }
-            // 3. Steakhouse
-            if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-steakhouse-masterclass-7p3m0uhv')) {
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-steakhouse-masterclass-7p3m0uhv')) {
                 document.getElementById('btn-steak').style.display = 'block';
             }
-            // 4. Asian
-            if (isPrivate || memberPlanIds.includes('pln_asian-masterclass-one-hczq0up7')) {
+            if (isPrivate || plans.includes('pln_asian-masterclass-one-hczq0up7')) {
                 document.getElementById('btn-asian').style.display = 'block';
             }
-            // 5. The rest of the Academy courses
             if (isAcademy || isPrivate) {
                 document.getElementById('btn-savoury').style.display = 'block';
                 document.getElementById('btn-sweet').style.display = 'block';
@@ -77,6 +72,8 @@
                 document.getElementById('btn-meat').style.display = 'block';
             }
         }
+    }).catch(err => {
+        console.error("Memberstack Error:", err);
     });
     </script>
 </body>
