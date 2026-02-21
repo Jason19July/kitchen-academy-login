@@ -45,26 +45,31 @@
             document.getElementById('logged-in-view').style.display = 'block';
             const connections = member.planConnections || [];
             const memberPlanIds = connections.map(c => c.planId);
+            
             const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
             const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
             const isAnyVIP = isAcademy || isPrivate;
 
+            // VERIFIED IDS FROM DASHBOARD
             const coreCourses = {
                 'pln_single-course-bread-masterclass-one-hl3m0uqv': 'btn-bread',
-                'YOUR_BREAD_2_PLAN_ID': 'btn-bread2', // <--- SWAP THIS
-                'pln_single-course-savoury-foundations-v33i0u0u': 'btn-savoury',
-                'pln_single-course-sweet-foundations-773s0u7r': 'btn-sweet',
-                'pln_single-course-chicken-masterclass-963v0u9h': 'btn-chicken',
-                'pln_single-course-meat-masterclass-6f3v0u9o': 'btn-meat',
-                'pln_single-course-steakhouse-masterclass-m83w0ubf': 'btn-steakhouse'
+                'pln_single-course-bread-masterclass-two-m6zr0uim': 'btn-bread2',
+                'pln_single-course-a32z0ulc': 'btn-savoury',
+                'pln_single-course-sweet-foundations-masterclass-one-133k01wo': 'btn-sweet',
+                'pln_single-course-chicken-masterclass-one-vp3r0jx7': 'btn-chicken',
+                'pln_single-course-meat-masterclass-one-eo3l0und': 'btn-meat',
+                'pln_single-course-a-steakhouse-at-home-rp3s0j0x': 'btn-steakhouse'
             };
+
             for (const [planId, btnId] of Object.entries(coreCourses)) {
                 if (isAnyVIP || memberPlanIds.includes(planId)) {
                     const el = document.getElementById(btnId);
                     if (el) el.style.display = 'block';
                 }
             }
-            const asianPlanId = 'YOUR_ASIAN_PLAN_ID'; // <--- SWAP THIS
+
+            // PREMIUM COURSE (Asian Masterclass)
+            const asianPlanId = 'pln_asian-masterclass-one-hczq0up7';
             if (isPrivate || memberPlanIds.includes(asianPlanId)) {
                 const el = document.getElementById('btn-asian');
                 if (el) el.style.display = 'block';
