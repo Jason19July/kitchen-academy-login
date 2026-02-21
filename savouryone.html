@@ -3,8 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Savoury Foundations</title>
+    <!-- 1. The Security Guard Script -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
-    <style>body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; } iframe { border: none; width: 100vw; height: 100vh; }</style>
+    
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
+        iframe { border: none; width: 100vw; height: 100vh; display: none; } /* Start Hidden */
+    </style>
 </head>
-<body><iframe src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe></body>
+<body>
+    <!-- 2. The Gated Content Attribute -->
+    <div data-ms-content="!members">
+        <!-- This empty div helps Memberstack identify the page state -->
+    </div>
+
+    <iframe id="courseFrame" src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe>
+
+    <script>
+        // 3. Only show the iframe if the member is logged in
+        window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+            if (member) {
+                document.getElementById('courseFrame').style.display = 'block';
+            }
+        });
+    </script>
+</body>
 </html>
