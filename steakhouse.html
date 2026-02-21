@@ -2,49 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Steakhouse at Home | The Kitchen Academy</title>
-
-    <!-- 1. The Memberstack Header Script (The Security Guard) -->
+    <title>A Steakhouse at Home</title>
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
-
-    <style>
-        body { margin: 0; padding: 0; background-color: #f4f7f6; font-family: sans-serif; overflow: hidden; }
-        .loading-screen {
-            display: flex; justify-content: center; align-items: center;
-            height: 100vh; width: 100vw; position: fixed; background: white; z-index: 999;
-        }
-        iframe { border: none; width: 100vw; height: 100vh; display: none; }
-    </style>
+    <style>body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; } iframe { border: none; width: 100vw; height: 100vh; }</style>
 </head>
-<body>
-
-    <!-- This shows for a split second while Memberstack checks the "reservation" -->
-    <div id="loading" class="loading-screen">
-        <p style="color: #800000; font-weight: bold;">Preparing your kitchen...</p>
-    </div>
-
-    <!-- 2. The Course Content (The Gamma Embed) -->
-    <iframe id="course-content" src="https://a-steakhouse-at-home-gekcr94.gamma.site/" allow="fullscreen"></iframe>
-
-    <script>
-    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        const STEAKHOUSE_PLAN_ID = "pln_single-course-a-steakhouse-at-home-rp3s0j0x";
-        const SALES_PAGE_URL = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking"; // REPLACE THIS with your Gamma Sales Page
-
-        // Check if member exists AND has the Steakhouse plan
-        const hasPlan = member && member.planConnections && member.planConnections.some(plan => plan.planId === STEAKHOUSE_PLAN_ID);
-
-        if (hasPlan) {
-            // SUCCESS: Show the course
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('course-content').style.display = 'block';
-        } else {
-            // FAIL: Redirect to the sales page
-            window.location.href = SALES_PAGE_URL;
-        }
-    });
-    </script>
-
-</body>
+<body><iframe src="https://gamma.app/embed/0j8tbxyt5ocu7hm" allow="fullscreen"></iframe></body>
 </html>
