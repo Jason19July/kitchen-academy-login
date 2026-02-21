@@ -2,23 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Asian Masterclass | The Kitchen Academy</title>
+    <title>Asian Masterclass One | The Kitchen Academy</title>
+    <!-- Memberstack Security Script -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
     <style>
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
+        /* This makes the Gamma video fill the entire browser window */
         #courseFrame { display: none; border: none; width: 100vw; height: 100vh; }
     </style>
 </head>
 <body>
-    <iframe id="courseFrame" src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe>
+
+    <!-- Your Unique Asian Masterclass Gamma Embed -->
+    <iframe id="courseFrame" src="https://gamma.app/embed/rar60sf0fyyogns" allow="fullscreen" title="Asian Masterclass One"></iframe>
+
     <script>
+        // Check if the person is a logged-in member
         window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
             if (member) {
+                // Member is logged in! Show the Asian Course.
                 document.getElementById('courseFrame').style.display = 'block';
             } else {
+                // Not logged in! Redirect to the Sales Page.
                 window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
             }
         }).catch(() => {
+            // Error check! Redirect to the Sales Page.
             window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
         });
     </script>
