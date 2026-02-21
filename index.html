@@ -14,9 +14,10 @@
         .btn-primary { background: #800000; color: white; }
         .btn-secondary { background: #e0e0e0; color: #333; }
         p { color: #666; font-size: 15px; line-height: 1.6; }
-        #logged-in-view, #logged-out-view { display: none; }
-        /* This ensures hidden buttons don't take up space */
-        [data-ms-content] { display: none; }
+
+        /* Memberstack will automatically show/hide elements with these attributes */
+        [ms-code-show-if="logged-out"] { display: block; }
+        [ms-code-show-if="logged-in"] { display: block; }
     </style>
 </head>
 <body>
@@ -24,8 +25,8 @@
     <div class="hub-card">
         <div class="logo">The Kitchen Academy</div>
 
-        <!-- LOGGED OUT VIEW -->
-        <div id="logged-out-view">
+        <!-- THIS SECTION ONLY SHOWS WHEN LOGGED OUT -->
+        <div data-ms-content="!members">
             <p>Welcome! Please log in to access your masterclasses.</p>
             <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
             <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
@@ -33,32 +34,20 @@
             <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
         </div>
 
-        <!-- LOGGED IN VIEW -->
-        <div id="logged-in-view">
+        <!-- THIS SECTION ONLY SHOWS WHEN LOGGED IN -->
+        <div data-ms-content="members">
             <p>Welcome back, Chef! Select your course below:</p>
 
-            <!-- BREAD ONE -->
+            <!-- Individual Course Buttons - Hidden by default, Memberstack shows them if the plan matches -->
             <a data-ms-content="pln_single-course-bread-masterclass-one-hl3m0uqv" href="https://www.login.thekitchenacademy.online/breadone.html" class="btn btn-primary">Enter Bread Masterclass</a>
-            
-            <!-- SAVOURY ONE -->
             <a data-ms-content="pln_single-course-a32z0ulc" href="https://www.login.thekitchenacademy.online/savouryone.html" class="btn btn-primary">Enter Savoury Foundations</a>
-
-            <!-- SWEET ONE -->
             <a data-ms-content="pln_single-course-sweet-foundations-masterclass-one-133k01wo" href="https://www.login.thekitchenacademy.online/sweetone.html" class="btn btn-primary">Enter Sweet Foundations</a>
-
-            <!-- CHICKEN ONE -->
             <a data-ms-content="pln_single-course-chicken-masterclass-one-vp3r0jx7" href="https://www.login.thekitchenacademy.online/chickenone.html" class="btn btn-primary">Enter Chicken Masterclass</a>
-
-            <!-- MEAT ONE -->
             <a data-ms-content="pln_single-course-meat-masterclass-one-eo3l0und" href="https://www.login.thekitchenacademy.online/meatone.html" class="btn btn-primary">Enter Meat Masterclass</a>
-
-            <!-- STEAKHOUSE -->
             <a data-ms-content="pln_single-course-a-steakhouse-at-home-rp3s0j0x" href="https://www.login.thekitchenacademy.online/steakhouse.html" class="btn btn-primary">Enter Steakhouse Masterclass</a>
-
-            <!-- FULL ACADEMY BUNDLE -->
+            
+            <!-- Bundles -->
             <a data-ms-content="pln_the-kitchen-academy-gi310uow" href="https://login.thekitchenacademy.online/kitchenacademy.html" class="btn btn-primary">Enter The Kitchen Academy</a>
-
-            <!-- PRIVATE KITCHEN -->
             <a data-ms-content="pln_the-private-kitchen-fv310jek" href="https://login.thekitchenacademy.online/privatekitchen.html" class="btn btn-primary">Enter The Private Kitchen</a>
             
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
@@ -66,16 +55,7 @@
         </div>
     </div>
 
-    <script>
-    // Run once when Memberstack is ready to show the correct view
-    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        if (member) {
-            document.getElementById('logged-in-view').style.display = 'block';
-        } else {
-            document.getElementById('logged-out-view').style.display = 'block';
-        }
-    });
-    </script>
+    <!-- No extra custom JS needed for the basic login/logout toggle! Memberstack handles data-ms-content automatically -->
 
 </body>
 </html>
