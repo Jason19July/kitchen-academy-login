@@ -25,16 +25,17 @@
         </div>
 
         <div id="logged-in-view">
-            <p>Welcome back, Chef!</p>
+            <p id="welcome-msg">Welcome back, Chef!</p>
             
-            <!-- BREAD 1 -->
-            <a id="btn-bread1" href="breadone.html" class="btn btn-primary course-btn">Enter Bread Masterclass 1</a>
-            
-            <!-- BREAD 2 -->
-            <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary course-btn">Enter Bread Masterclass 2</a>
-            
-            <!-- ASIAN (PREMIUM) -->
-            <a id="btn-asian" href="premiumasianone.html" class="btn btn-primary course-btn">Enter Asian Masterclass (Premium)</a>
+            <!-- ALL BUTTONS -->
+            <a id="btn-bread1" href="breadone.html" class="btn btn-primary course-btn">Bread Masterclass 1</a>
+            <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary course-btn">Bread Masterclass 2</a>
+            <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Savoury Masterclass</a>
+            <a id="btn-sweet" href="sweetone.html" class="btn btn-primary course-btn">Sweet Masterclass</a>
+            <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Chicken Masterclass</a>
+            <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Meat Masterclass</a>
+            <a id="btn-steak" href="steakhouse.html" class="btn btn-primary course-btn">Steakhouse Masterclass</a>
+            <a id="btn-asian" href="premiumasianone.html" class="btn btn-primary course-btn">Asian Masterclass (Premium)</a>
             
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
             <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
@@ -49,20 +50,33 @@
             document.getElementById('logged-in-view').style.display = 'block';
             const memberPlanIds = (member.planConnections || []).map(c => c.planId);
             
+            // LOGGING TO CONSOLE FOR DEBUGGING
+            console.log("Member Plans Found:", memberPlanIds);
+
             const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
             const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
 
-            // Logic for Bread 1
-            if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
-                document.getElementById('btn-bread1').style.display = 'block';
+            // 1. Show Academy Courses
+            if (isAcademy || isPrivate) {
+                const academyButtons = ['btn-bread1', 'btn-bread2', 'btn-savoury', 'btn-sweet', 'btn-chicken', 'btn-meat', 'btn-steak'];
+                academyButtons.forEach(id => {
+                    document.getElementById(id).style.display = 'block';
+                });
             }
-            // Logic for Bread 2
-            if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
-                document.getElementById('btn-bread2').style.display = 'block';
-            }
-            // Logic for Asian (Premium)
+
+            // 2. Show Asian (Premium)
             if (isPrivate || memberPlanIds.includes('pln_asian-masterclass-one-hczq0up7')) {
                 document.getElementById('btn-asian').style.display = 'block';
+            }
+            
+            // 3. Single Course Fallbacks (If they aren't Academy but bought one)
+            if (!isAcademy && !isPrivate) {
+                if (memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
+                    document.getElementById('btn-bread1').style.display = 'block';
+                }
+                if (memberPlanIds.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
+                    document.getElementById('btn-bread2').style.display = 'block';
+                }
             }
         }
     });
