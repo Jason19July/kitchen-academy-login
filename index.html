@@ -1,85 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>The Kitchen Academy | Hub</title>
-    <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
-    <style>
-        body { background: #f4f7f6; display: flex; justify-content: center; align-items: center; min-height: 100vh; font-family: sans-serif; margin: 0; padding: 20px; }
-        .hub-card { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; max-width: 450px; width: 100%; }
-        .logo { color: #800000; font-size: 28px; font-weight: bold; margin-bottom: 20px; }
-        .btn { display: block; width: 100%; padding: 14px; margin: 10px 0; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; text-decoration: none; transition: background 0.2s; text-align: center; box-sizing: border-box; }
-        .btn-primary { background: #800000; color: white; }
-        .btn-secondary { background: #e0e0e0; color: #333; }
-        p { color: #666; font-size: 15px; line-height: 1.6; }
-        #logged-in-view, #logged-out-view, .course-btn { display: none; }
-    </style>
-</head>
-<body>
-    <div class="hub-card">
-        <div class="logo">The Kitchen Academy Hub</div>
+<script>
+window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
+    if (!member) {
+        document.getElementById('logged-out-view').style.display = 'block';
+    } else {
+        document.getElementById('logged-in-view').style.display = 'block';
+        const memberPlanIds = (member.planConnections || []).map(c => c.planId);
         
-        <div id="logged-out-view">
-            <p>Please log in to access your masterclasses.</p>
-            <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
-        </div>
+        const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
+        const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
 
-        <div id="logged-in-view">
-            <p id="welcome-msg">Welcome back, Chef!</p>
-            
-            <!-- ALL BUTTONS -->
-            <a id="btn-bread1" href="breadone.html" class="btn btn-primary course-btn">Bread Masterclass 1</a>
-            <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary course-btn">Bread Masterclass 2</a>
-            <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Savoury Masterclass</a>
-            <a id="btn-sweet" href="sweetone.html" class="btn btn-primary course-btn">Sweet Masterclass</a>
-            <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Chicken Masterclass</a>
-            <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Meat Masterclass</a>
-            <a id="btn-steak" href="steakhouse.html" class="btn btn-primary course-btn">Steakhouse Masterclass</a>
-            <a id="btn-asian" href="premiumasianone.html" class="btn btn-primary course-btn">Asian Masterclass (Premium)</a>
-            
-            <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
-            <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
-        </div>
-    </div>
+        // --- SHOW BUTTONS LOGIC ---
 
-    <script>
-    window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        if (!member) {
-            document.getElementById('logged-out-view').style.display = 'block';
-        } else {
-            document.getElementById('logged-in-view').style.display = 'block';
-            const memberPlanIds = (member.planConnections || []).map(c => c.planId);
-            
-            // LOGGING TO CONSOLE FOR DEBUGGING
-            console.log("Member Plans Found:", memberPlanIds);
-
-            const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
-            const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
-
-            // 1. Show Academy Courses
-            if (isAcademy || isPrivate) {
-                const academyButtons = ['btn-bread1', 'btn-bread2', 'btn-savoury', 'btn-sweet', 'btn-chicken', 'btn-meat', 'btn-steak'];
-                academyButtons.forEach(id => {
-                    document.getElementById(id).style.display = 'block';
-                });
-            }
-
-            // 2. Show Asian (Premium)
-            if (isPrivate || memberPlanIds.includes('pln_asian-masterclass-one-hczq0up7')) {
-                document.getElementById('btn-asian').style.display = 'block';
-            }
-            
-            // 3. Single Course Fallbacks (If they aren't Academy but bought one)
-            if (!isAcademy && !isPrivate) {
-                if (memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
-                    document.getElementById('btn-bread1').style.display = 'block';
-                }
-                if (memberPlanIds.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
-                    document.getElementById('btn-bread2').style.display = 'block';
-                }
-            }
+        // 1. Bread 1: Show if Academy OR Private OR Single Buyer
+        if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
+            document.getElementById('btn-bread1').style.display = 'block';
         }
-    });
-    </script>
-</body>
-</html>
+
+        // 2. Bread 2: Show if Academy OR Private OR Single Buyer
+        if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
+            document.getElementById('btn-bread2').style.display = 'block';
+        }
+
+        // 3. Steakhouse: Show if Academy OR Private OR Single Buyer
+        if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-steakhouse-masterclass-7p3m0uhv')) {
+            document.getElementById('btn-steakhouse').style.display = 'block';
+        }
+
+        // 4. Other Academy Courses: Show if Academy OR Private
+        if (isAcademy || isPrivate) {
+            document.getElementById('btn-savoury').style.display = 'block';
+            document.getElementById('btn-sweet').style.display = 'block';
+            document.getElementById('btn-chicken').style.display = 'block';
+            document.getElementById('btn-meat').style.display = 'block';
+        }
+
+        // 5. Asian: Show if Private OR Single Buyer
+        if (isPrivate || memberPlanIds.includes('pln_asian-masterclass-one-hczq0up7')) {
+            document.getElementById('btn-asian').style.display = 'block';
+        }
+    }
+});
+</script>
