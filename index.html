@@ -27,6 +27,7 @@
         <div id="logged-in-view">
             <p>Welcome back, Chef!</p>
             
+            <!-- BUTTONS -->
             <a id="btn-bread1" href="breadone.html" class="btn btn-primary">Bread Masterclass 1</a>
             <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary">Bread Masterclass 2</a>
             <a id="btn-savoury" href="savouryone.html" class="btn btn-primary">Savoury Masterclass</a>
@@ -47,8 +48,11 @@
             document.getElementById('logged-out-view').style.display = 'block';
         } else {
             document.getElementById('logged-in-view').style.display = 'block';
-            const plans = (member.planConnections || []).map(c => c.planId);
             
+            // Get all Plan IDs the member has
+            const plans = (member.planConnections || []).map(c => c.planId);
+            console.log("Active Plans:", plans); // This helps us debug in the browser console
+
             const isAcademy = plans.includes('pln_the-kitchen-academy-gi310uow');
             const isPrivate = plans.includes('pln_the-private-kitchen-fv310jek');
 
@@ -60,15 +64,16 @@
             if (isAcademy || isPrivate || plans.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
                 document.getElementById('btn-bread2').style.display = 'block';
             }
-            // 3. Steakhouse
+            // 3. STEAKHOUSE (CRITICAL FIX)
             if (isAcademy || isPrivate || plans.includes('pln_single-course-steakhouse-masterclass-7p3m0uhv')) {
-                document.getElementById('btn-steak').style.display = 'block';
+                const steakBtn = document.getElementById('btn-steak');
+                if(steakBtn) steakBtn.style.display = 'block';
             }
-            // 4. Asian
+            // 4. ASIAN
             if (isPrivate || plans.includes('pln_asian-masterclass-one-hczq0up7')) {
                 document.getElementById('btn-asian').style.display = 'block';
             }
-            // 5. Academy Courses
+            // 5. ACADEMY COURSES
             if (isAcademy || isPrivate) {
                 document.getElementById('btn-savoury').style.display = 'block';
                 document.getElementById('btn-sweet').style.display = 'block';
@@ -76,8 +81,6 @@
                 document.getElementById('btn-meat').style.display = 'block';
             }
         }
-    }).catch(err => {
-        console.error("Memberstack Error:", err);
     });
     </script>
 </body>
