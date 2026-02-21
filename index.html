@@ -17,62 +17,52 @@
 </head>
 <body>
     <div class="hub-card">
-        <div class="logo">The Kitchen Academy</div>
+        <div class="logo">The Kitchen Academy Hub</div>
+        
         <div id="logged-out-view">
-            <p>Welcome! Please log in to access your masterclasses.</p>
+            <p>Please log in to access your masterclasses.</p>
             <button data-ms-modal="login" class="btn btn-primary">Member Login</button>
-            <button data-ms-modal="forgot-password" class="btn btn-secondary">Set / Reset Password</button>
         </div>
+
         <div id="logged-in-view">
-            <p id="welcome-text">Welcome back, Chef! Select your course below:</p>
-            <a id="btn-bread" href="breadone.html" class="btn btn-primary course-btn">Enter Bread Masterclass</a>
+            <p>Welcome back, Chef!</p>
+            
+            <!-- BREAD 1 -->
+            <a id="btn-bread1" href="breadone.html" class="btn btn-primary course-btn">Enter Bread Masterclass 1</a>
+            
+            <!-- BREAD 2 -->
             <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary course-btn">Enter Bread Masterclass 2</a>
-            <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Enter Savoury Foundations</a>
-            <a id="btn-sweet" href="sweetone.html" class="btn btn-primary course-btn">Enter Sweet Foundations</a>
-            <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Enter Chicken Masterclass</a>
-            <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Enter Meat Masterclass</a>
-            <a id="btn-steakhouse" href="steakhouse.html" class="btn btn-primary course-btn">Enter Steakhouse Masterclass</a>
-            <a id="btn-asian" href="asianone.html" class="btn btn-primary course-btn">Enter Asian Masterclass (Premium)</a>
+            
+            <!-- ASIAN (PREMIUM) -->
+            <a id="btn-asian" href="premiumasianone.html" class="btn btn-primary course-btn">Enter Asian Masterclass (Premium)</a>
+            
             <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
             <button data-ms-action="logout" class="btn btn-secondary">Logout</button>
         </div>
     </div>
+
     <script>
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
         if (!member) {
             document.getElementById('logged-out-view').style.display = 'block';
         } else {
             document.getElementById('logged-in-view').style.display = 'block';
-            const connections = member.planConnections || [];
-            const memberPlanIds = connections.map(c => c.planId);
+            const memberPlanIds = (member.planConnections || []).map(c => c.planId);
             
             const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
             const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
-            const isAnyVIP = isAcademy || isPrivate;
 
-            // VERIFIED IDS FROM DASHBOARD
-            const coreCourses = {
-                'pln_single-course-bread-masterclass-one-hl3m0uqv': 'btn-bread',
-                'pln_single-course-bread-masterclass-two-m6zr0uim': 'btn-bread2',
-                'pln_single-course-a32z0ulc': 'btn-savoury',
-                'pln_single-course-sweet-foundations-masterclass-one-133k01wo': 'btn-sweet',
-                'pln_single-course-chicken-masterclass-one-vp3r0jx7': 'btn-chicken',
-                'pln_single-course-meat-masterclass-one-eo3l0und': 'btn-meat',
-                'pln_single-course-a-steakhouse-at-home-rp3s0j0x': 'btn-steakhouse'
-            };
-
-            for (const [planId, btnId] of Object.entries(coreCourses)) {
-                if (isAnyVIP || memberPlanIds.includes(planId)) {
-                    const el = document.getElementById(btnId);
-                    if (el) el.style.display = 'block';
-                }
+            // Logic for Bread 1
+            if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv')) {
+                document.getElementById('btn-bread1').style.display = 'block';
             }
-
-            // PREMIUM COURSE (Asian Masterclass)
-            const asianPlanId = 'pln_asian-masterclass-one-hczq0up7';
-            if (isPrivate || memberPlanIds.includes(asianPlanId)) {
-                const el = document.getElementById('btn-asian');
-                if (el) el.style.display = 'block';
+            // Logic for Bread 2
+            if (isAcademy || isPrivate || memberPlanIds.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
+                document.getElementById('btn-bread2').style.display = 'block';
+            }
+            // Logic for Asian (Premium)
+            if (isPrivate || memberPlanIds.includes('pln_asian-masterclass-one-hczq0up7')) {
+                document.getElementById('btn-asian').style.display = 'block';
             }
         }
     });
