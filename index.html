@@ -37,15 +37,19 @@
         <div id="logged-in-view">
             <p id="welcome-text">Welcome back, Chef! Select your course below:</p>
 
-            <!-- Course Buttons -->
+            <!-- CORE COURSES (Unlocks for Academy, Private, and Single) -->
             <a id="btn-bread" href="breadone.html" class="btn btn-primary course-btn">Enter Bread Masterclass</a>
+            <a id="btn-bread2" href="breadtwo.html" class="btn btn-primary course-btn">Enter Bread Masterclass 2</a>
             <a id="btn-savoury" href="savouryone.html" class="btn btn-primary course-btn">Enter Savoury Foundations</a>
             <a id="btn-sweet" href="sweetone.html" class="btn btn-primary course-btn">Enter Sweet Foundations</a>
             <a id="btn-chicken" href="chickenone.html" class="btn btn-primary course-btn">Enter Chicken Masterclass</a>
             <a id="btn-meat" href="meatone.html" class="btn btn-primary course-btn">Enter Meat Masterclass</a>
             <a id="btn-steakhouse" href="steakhouse.html" class="btn btn-primary course-btn">Enter Steakhouse Masterclass</a>
+
+            <!-- PREMIUM COURSES (Unlocks for Private and Single ONLY) -->
+            <a id="btn-asian" href="asianone.html" class="btn btn-primary course-btn">Enter Asian Masterclass (Premium)</a>
             
-            <!-- Tier Specific Buttons (Usually only for the Master Plans) -->
+            <!-- MASTER PORTAL BUTTONS -->
             <a id="btn-academy" href="kitchenacademy.html" class="btn btn-primary course-btn">Academy Member Portal</a>
             <a id="btn-private" href="privatekitchen.html" class="btn btn-primary course-btn">Private Kitchen Portal</a>
             
@@ -55,12 +59,6 @@
     </div>
 
     <script>
-    // 1. Define the "Master Keys" that unlock EVERYTHING
-    const MASTER_PLANS = [
-        'pln_the-kitchen-academy-gi310uow', // Academy
-        'pln_the-private-kitchen-fv310jek'  // Private Kitchen
-    ];
-
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
         if (!member) {
             document.getElementById('logged-out-view').style.display = 'block';
@@ -70,35 +68,44 @@
             const connections = member.planConnections || [];
             const memberPlanIds = connections.map(c => c.planId);
 
-            // 2. Check if this member is a VIP (Academy or Private)
-            const isVIP = MASTER_PLANS.some(id => memberPlanIds.includes(id));
+            // 1. IDENTIFY TIER ACCESS
+            const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
+            const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
+            const isAnyVIP = isAcademy || isPrivate;
 
-            // 3. The Course Map (Plan ID : Button ID)
-            const courseMap = {
+            // 2. CORE COURSES LOGIC
+            // These unlock if: Any VIP Tier OR the Specific Single Plan
+            const coreCourses = {
                 'pln_single-course-bread-masterclass-one-hl3m0uqv': 'btn-bread',
+                'pln_single-course-bread-masterclass-two-m6zr0uim': 'btn-bread2', // Update with your new Bread 2 Plan ID
                 'pln_single-course-savoury-foundations-v33i0u0u': 'btn-savoury',
                 'pln_single-course-sweet-foundations-773s0u7r': 'btn-sweet',
                 'pln_single-course-chicken-masterclass-963v0u9h': 'btn-chicken',
                 'pln_single-course-meat-masterclass-6f3v0u9o': 'btn-meat',
                 'pln_single-course-steakhouse-masterclass-m83w0ubf': 'btn-steakhouse'
-                // ADD NEW COURSES HERE LATER
             };
 
-            // 4. Logic: Show button if they own the course OR are a VIP
-            for (const [planId, btnId] of Object.entries(courseMap)) {
-                if (isVIP || memberPlanIds.includes(planId)) {
+            for (const [planId, btnId] of Object.entries(coreCourses)) {
+                if (isAnyVIP || memberPlanIds.includes(planId)) {
                     const el = document.getElementById(btnId);
                     if (el) el.style.display = 'block';
                 }
             }
 
-            // 5. Always show the specific Master Portal button if they have that specific plan
-            if (memberPlanIds.includes('pln_the-kitchen-academy-gi310uow')) {
-                document.getElementById('btn-academy').style.display = 'block';
+            // 3. PREMIUM COURSE LOGIC
+            // Unlocks if: Private Kitchen Tier OR the Specific Single Plan
+            // (Academy members do NOT get this automatically)
+            const asianPlanId = 'pln_asian-masterclass-one-hczq0up7'; // Update with your new Asian Plan ID
+            const asianBtnId = 'btn-asian';
+            
+            if (isPrivate || memberPlanIds.includes(asianPlanId)) {
+                const el = document.getElementById(asianBtnId);
+                if (el) el.style.display = 'block';
             }
-            if (memberPlanIds.includes('pln_the-private-kitchen-fv310jek')) {
-                document.getElementById('btn-private').style.display = 'block';
-            }
+
+            // 4. SHOW MASTER PORTALS
+            if (isAcademy) document.getElementById('btn-academy').style.display = 'block';
+            if (isPrivate) document.getElementById('btn-private').style.display = 'block';
         }
     });
     </script>
