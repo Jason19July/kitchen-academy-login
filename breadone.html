@@ -12,21 +12,29 @@
 </head>
 <body>
     <div id="content">
-        <!-- I've used the Bread 1 Embed ID I found in your previous setup -->
-        <iframe src="https://gamma.app/embed/7879r39m19v926i" allow="fullscreen"></iframe>
+        <!-- YOUR NEW BREAD ONE GAMMA LINK -->
+        <iframe src="https://gamma.app/embed/ya47k4y0w8ziluh" allow="fullscreen"></iframe>
     </div>
     <script>
     window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-        if (!member) { window.location.href = "https://www.thekitchenacademy.online/join-us"; return; }
+        // 1. If not logged in, send to join page
+        if (!member) { 
+            window.location.href = "https://www.thekitchenacademy.online/join-us"; 
+            return; 
+        }
+
         const memberPlanIds = (member.planConnections || []).map(c => c.planId);
         
+        // 2. Define the "Master Keys" and the "Single Course Key"
         const isAcademy = memberPlanIds.includes('pln_the-kitchen-academy-gi310uow');
         const isPrivate = memberPlanIds.includes('pln_the-private-kitchen-fv310jek');
         const hasThisCourse = memberPlanIds.includes('pln_single-course-bread-masterclass-one-hl3m0uqv');
 
+        // 3. Check if they have ANY of the keys
         if (isAcademy || isPrivate || hasThisCourse) {
             document.getElementById('content').style.display = 'block'; 
         } else {
+            // If they are logged in but don't have the right plan, send to join page
             window.location.href = "https://www.thekitchenacademy.online/join-us"; 
         }
     });
