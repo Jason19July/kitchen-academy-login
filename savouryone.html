@@ -3,35 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Savoury Foundations | The Kitchen Academy</title>
-    <!-- 1. The Security Guard Script (Memberstack) -->
+    <!-- 1. The Security Guard Script -->
     <script data-memberstack-app="app_cmlt23jfd002u0stjhljd13s9" src="https://static.memberstack.com/scripts/v2/memberstack.js" type="text/javascript"></script>
     
     <style>
-        /* Keep the screen black and hide everything until the badge is checked */
         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
-        iframe { border: none; width: 100vw; height: 100vh; display: none; } 
+        iframe { border: none; width: 100vw; height: 100vh; }
+        
+        /* This hides the course from anyone who isn't a member */
+        [data-ms-content="members"] { display: none; }
     </style>
 </head>
 <body>
 
-    <!-- The Course Content (Hidden by default) -->
-    <iframe id="courseFrame" src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe>
-
-    <script>
-        // 2. The Internal Security Guard
-        window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
-            if (member) {
-                // ✅ MEMBER FOUND: Show the course!
-                document.getElementById('courseFrame').style.display = 'block';
-            } else {
-                // ❌ NO MEMBER: Whisk them to the sales page immediately
-                window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
-            }
-        }).catch(() => {
-            // 🚨 ERROR CHECK: If something goes wrong, safety first—redirect them
-            window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
-        });
-    </script>
+    <!-- 2. This DIV only shows up for logged-in members -->
+    <div data-ms-content="members" style="display: block;">
+        <iframe src="https://gamma.app/embed/8y3xkou9a1g7p2g" allow="fullscreen"></iframe>
+    </div>
 
 </body>
 </html>
