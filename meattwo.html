@@ -14,28 +14,20 @@
 <body>
 
     <!-- Your Unique Meat Masterclass Two Gamma Embed -->
-    <iframe id="courseFrame" src="https://meat-masterclass-two-almzpgu.gamma.site/meat-masterclass-two" allow="fullscreen" title="Meat Masterclass Two"></iframe>
+    <iframe id="courseFrame" src="https://gamma.app/embed/t3whs9lurxe0hmx" allow="fullscreen" title="Meat Masterclass Two"></iframe>
 
     <script>
-        // Check if the person is a logged-in member with the correct plan
+        // Check if the person is a logged-in member
         window.$memberstackDom.getCurrentMember().then(({ data: member }) => {
             if (member && member.planConnections) {
-                // Define the plans allowed to view this course:
-                // 1. Single Course - Meat Masterclass Two (pln_single-course-meat-masterclass-two-s200iwf)
-                // 2. The Private Kitchen (pln_the-private-kitchen-fv310jek)
-                // 3. The Kitchen Academy (pln_the-kitchen-academy-gi310uow)
-                const allowedPlans = [
-                    'pln_single-course-meat-masterclass-two-s200iwf',
-                    'pln_the-private-kitchen-fv310jek',
-                    'pln_the-kitchen-academy-gi310uow'
-                ];
+                // Get all Plan IDs the member has
+                const plans = member.planConnections.map(c => c.planId);
 
-                // Check if the member has any of these plans active
-                const hasAccess = member.planConnections.some(connection => 
-                    allowedPlans.includes(connection.planId) && connection.status === 'ACTIVE'
-                );
+                const isAcademy = plans.includes('pln_the-kitchen-academy-gi310uow');
+                const isPrivate = plans.includes('pln_the-private-kitchen-fv310jek');
+                const hasMeatTwo = plans.includes('pln_single-course-meat-masterclass-two-s200iwf');
 
-                if (hasAccess) {
+                if (isAcademy || isPrivate || hasMeatTwo) {
                     // Member has access! Show the Meat Course.
                     document.getElementById('courseFrame').style.display = 'block';
                 } else {
@@ -47,4 +39,9 @@
                 window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
             }
         }).catch(() => {
-            // Error check! Redirect to the Sales Page
+            // Error check! Redirect to the Sales Page.
+            window.location.href = "https://the-kitchen-academy-59amry9.gamma.site/start-cooking";
+        });
+    </script>
+</body>
+</html>
