@@ -33,7 +33,8 @@
             <a id="btn-savoury" href="savouryone.html" class="btn btn-primary">Savoury Masterclass</a>
             <a id="btn-sweet" href="sweetone.html" class="btn btn-primary">Sweet Masterclass</a>
             <a id="btn-chicken" href="chickenone.html" class="btn btn-primary">Chicken Masterclass</a>
-            <a id="btn-meat" href="meatone.html" class="btn btn-primary">Meat Masterclass</a>
+            <a id="btn-meat" href="meatone.html" class="btn btn-primary">Meat Masterclass 1</a>
+            <a id="btn-meat2" href="meattwo.html" class="btn btn-primary">Meat Masterclass 2</a>
             <a id="btn-steak" href="steakhouse.html" class="btn btn-primary">Steakhouse Masterclass</a>
             <a id="btn-asian" href="premiumasianone.html" class="btn btn-primary">Asian Masterclass (Premium)</a>
             
@@ -64,23 +65,38 @@
             if (isAcademy || isPrivate || plans.includes('pln_single-course-bread-masterclass-two-m6zr0uim')) {
                 document.getElementById('btn-bread2').style.display = 'block';
             }
-            // 3. STEAKHOUSE (CRITICAL FIX)
-            if (isAcademy || isPrivate || plans.includes('pln_single-course-steakhouse-masterclass-7p3m0uhv')) {
-                const steakBtn = document.getElementById('btn-steak');
-                if(steakBtn) steakBtn.style.display = 'block';
-            }
-            // 4. ASIAN
-            if (isPrivate || plans.includes('pln_asian-masterclass-one-hczq0up7')) {
-                document.getElementById('btn-asian').style.display = 'block';
-            }
-            // 5. ACADEMY COURSES
-            if (isAcademy || isPrivate) {
+            // 3. Savoury
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-savoury-masterclass-7u3k0u46')) {
                 document.getElementById('btn-savoury').style.display = 'block';
+            }
+            // 4. Sweet
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-sweet-masterclass-983m0u7o')) {
                 document.getElementById('btn-sweet').style.display = 'block';
+            }
+            // 5. Chicken
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-chicken-masterclass-0y3l0u7m')) {
                 document.getElementById('btn-chicken').style.display = 'block';
+            }
+            // 6. Meat 1
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-meat-masterclass-one-k23m0u8m')) {
                 document.getElementById('btn-meat').style.display = 'block';
             }
+            // 7. Meat 2 (New!)
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-meat-masterclass-two-s200iwf')) {
+                document.getElementById('btn-meat2').style.display = 'block';
+            }
+            // 8. Steakhouse
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-steakhouse-masterclass-m43l0uon')) {
+                document.getElementById('btn-steak').style.display = 'block';
+            }
+            // 9. Asian (Premium)
+            if (isAcademy || isPrivate || plans.includes('pln_single-course-premium-asian-masterclass-one-773l0uox')) {
+                document.getElementById('btn-asian').style.display = 'block';
+            }
         }
+    }).catch((error) => {
+        console.error("Error fetching member:", error);
+        document.getElementById('logged-out-view').style.display = 'block';
     });
     </script>
 </body>
